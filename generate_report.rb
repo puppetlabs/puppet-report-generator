@@ -28,21 +28,8 @@ def generate_time
   time.to_yaml.chomp.gsub('--- ','')
 end
 
-report_template = <<REPORT_TEMPLATE
---- !ruby/object:Puppet::Transaction::Report
-  configuration_version: <%= params[:configuration_version] %>
-  host: <%= params[:host] %>
-  kind: apply
-  logs: []
-  metrics: {}
-  puppet_version: 2.6.5
-  report_format: 2
-  resource_statuses: {}
-  status: <%= params[:status] %>
-  time: <%= params[:time] %>
-REPORT_TEMPLATE
-
-100.times do
+def generate_report
+  @report_template ||= File.read("report_template.yaml.erb")
   hostname = generate_hostname
   puts hostname
   params = {
@@ -52,6 +39,6 @@ REPORT_TEMPLATE
     :time => generate_time,
   }
   File.open("yaml/#{hostname}.yaml","w") do |f|
-    f.write ERB.new(report_template).result(params.send(:binding))
+    f.write ERB.new(@report_template).result(params.send(:binding))
   end
 end
