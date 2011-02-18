@@ -22,6 +22,12 @@ def generate_hostname
   "#{host}.#{@domain}.#{@ext}"
 end
 
+def generate_time
+  time = Time.now
+  time -= 1.day if rand(100) < 5
+  time.to_yaml.chomp.gsub('--- ','')
+end
+
 report_template = <<REPORT_TEMPLATE
 --- !ruby/object:Puppet::Transaction::Report
   configuration_version: <%= params[:configuration_version] %>
@@ -36,14 +42,14 @@ report_template = <<REPORT_TEMPLATE
   time: <%= params[:time] %>
 REPORT_TEMPLATE
 
-5.times do
+100.times do
   hostname = generate_hostname
   puts hostname
   params = {
     :configuration_version => Time.now.to_i,
     :host => hostname,
-    :status => "failed",
-    :time => Time.now.to_yaml.chomp.gsub('--- ',''),
+    :status => [["changed"]*5,["unchanged"]*8,"failed"].flatten.random_element,
+    :time => generate_time,
   }
   File.open("yaml/#{hostname}.yaml","w") do |f|
     f.write ERB.new(report_template).result(params.send(:binding))
