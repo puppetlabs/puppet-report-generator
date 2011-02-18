@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'generate_report'
+require 'rubygems'
 
 unless ARGV.length > 0
   puts "Specify the rakefile to use"
@@ -10,7 +11,7 @@ end
 rakefile = ARGV.first
 
 100.times do
-  generate_report
+ generate_report
 end
 
 puts "Importing reports"

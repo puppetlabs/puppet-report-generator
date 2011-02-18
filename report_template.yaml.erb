@@ -1,11 +1,12 @@
 --- !ruby/object:Puppet::Transaction::Report
-  configuration_version: <%= params[:configuration_version] %>
-  host: <%= params[:host] %>
+  configuration_version: <%= configuration_version %>
+  host: <%= host %>
   kind: apply
   logs: []
   metrics: {}
   puppet_version: 2.6.5
   report_format: 2
-  resource_statuses: {}
-  status: <%= params[:status] %>
-  time: <%= params[:time] %>
+  resource_statuses:
+<%= resource_string %>
+  status: <%= status %>
+  time: <%= time %>
