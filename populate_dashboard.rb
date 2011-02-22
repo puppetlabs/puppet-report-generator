@@ -2,13 +2,18 @@
 
 require 'generate_report'
 require 'rubygems'
+begin
+  require 'puppet/util/zaml'
+  silence_warnings { YAML = ZAML }
+rescue LoadError
+end
 
 rakefile_if_specified = "-f #{ARGV.first}" unless ARGV.empty?
 
 100.times do
   report = DataGenerator.generate_report
   File.open("yaml/#{report.host}.yaml","w") do |f|
-    f.print report.to_yaml
+    f.print YAML.dump(report)
   end
 end
 
