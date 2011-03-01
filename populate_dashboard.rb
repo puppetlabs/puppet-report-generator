@@ -4,7 +4,7 @@ require 'generate_report'
 require 'rubygems'
 begin
   require 'puppet/util/zaml'
-  silence_warnings { YAML = ZAML }
+  YAML = ZAML
 rescue LoadError
 end
 
